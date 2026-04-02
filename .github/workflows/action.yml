@@ -35,11 +35,11 @@ jobs:
       - name: Run script
         run: ./run-postgres.sh
 
-      # Install kind
-      - name: Set up KinD
-        uses: engineerd/setup-kind@v0.6.0
-        with:
-          version: v0.20.0
+      - name: Install KinD
+        run: |
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/kind
 
       # Create a cluster
       - name: Create KinD cluster
