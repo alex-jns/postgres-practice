@@ -18,7 +18,7 @@ else
     echo "Table '$TABLE_NAME' does not exist. Creating it now."
     
     docker exec -i "$CONTAINER" \
-    psql -U postgres -d "$DB_NAME" -c "CREATE TABLE $TABLE_NAME ( id SERIAL PRIMARY KEY, name TEXT, email TEXT ); INSERT INTO users (name, email) VALUES ('Alice', 'alice@test.com'), ('Bob', 'bob@test.com'); SELECT * FROM users;"
+    psql -U postgres -d "$DB_NAME" -c "CREATE TABLE $TABLE_NAME ( id SERIAL PRIMARY KEY, name TEXT, email TEXT, age INT ); INSERT INTO users (name, email) VALUES ('Alice', 'alice@test.com'), ('Bob', 'bob@test.com'), ('Alex', 'alex@test.com'); SELECT * FROM users;"
 
     echo "Table '$TABLE_NAME' created and values inserted."
 fi
