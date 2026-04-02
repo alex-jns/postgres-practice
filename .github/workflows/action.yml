@@ -35,19 +35,24 @@ jobs:
       - name: Run script
         run: ./run-postgres.sh
 
-      # Set up kubernetes
+      # Install kind
+      - name: Set up KinD
+        uses: engineerd/setup-kind@v0.6.0
+        with:
+          version: v0.20.0
+
+      # Create a cluster
+      - name: Create KinD cluster
+        run: kind create cluster --name my-cluster
+
+      # Install kubectl
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
         with:
           version: "v1.27.3"
 
-      # Config kubernetes
-      - name: Configure kubeconfig
-        run: |
-          echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > kubeconfig
-          export KUBECONFIG=$PWD/kubeconfig
-
       # Deploy
       - name: Deploy PostgreSQL
         run: |
           kubectl apply -f k8s/deployment.yaml
+          kubectl rollout status deployment/postgres
