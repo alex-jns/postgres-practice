@@ -41,12 +41,6 @@ jobs:
         with:
           version: "v1.27.3"
 
-      # Config kubernetes
-      - name: Configure kubeconfig
-        run: |
-          echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > kubeconfig
-          export KUBECONFIG=$PWD/kubeconfig
-
       # Deploy
       - name: Deploy PostgreSQL
         run: |
