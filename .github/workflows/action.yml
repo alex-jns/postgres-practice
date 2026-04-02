@@ -34,3 +34,20 @@ jobs:
       # Run your script
       - name: Run script
         run: ./run-postgres.sh
+
+      # Set up kubernetes
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: "v1.27.3"
+
+      # Config kubernetes
+      - name: Configure kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > kubeconfig
+          export KUBECONFIG=$PWD/kubeconfig
+
+      # Deploy
+      - name: Deploy PostgreSQL
+        run: |
+          kubectl apply -f k8s/deployment.yaml
