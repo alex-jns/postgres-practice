@@ -1,0 +1,29 @@
+jobs:
+    run-script:
+        runs-on: ubuntu-latest
+
+        steps:
+        # Pull repo
+        -name: Checkout repository
+        uses: actions/checkout@v4
+
+        # Start PostgreSQL
+        -name: Start database
+        run: |
+        docker compose up -d
+
+        # Wait
+        -name: Wait for PostgreSQL
+        run: |
+        until docker exec mydb pg_isready -U postgres; do
+            echo "Waiting for database..."
+            sleep 2
+        done
+
+        # Executable
+        -name: Make script Executable
+        run: chmod +x script.sh
+
+        # Run
+        -name: Run script
+        run: ./run-postgres.sh
